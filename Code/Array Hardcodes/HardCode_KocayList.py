@@ -1,248 +1,285 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-    <meta charset="utf-8">
-
-    <title>HardCode_KocayList.py (editing)</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/static/base/images/favicon.ico?v=97c6417ed01bdc0ae3ef32ae4894fd03">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="/static/components/jquery-ui/themes/smoothness/jquery-ui.min.css?v=9b2c8d3489227115310662a343fce11c" type="text/css" />
-    <link rel="stylesheet" href="/static/components/jquery-typeahead/dist/jquery.typeahead.min.css?v=7afb461de36accb1aa133a1710f5bc56" type="text/css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
-<link rel="stylesheet" href="/static/components/codemirror/lib/codemirror.css?v=f25e9a9159e54b423b5a8dc4b1ab5c6e">
-<link rel="stylesheet" href="/static/components/codemirror/addon/dialog/dialog.css?v=c89dce10b44d2882a024e7befc2b63f5">
-
-    <link rel="stylesheet" href="/static/style/style.min.css?v=974839a888beb55bbba87883fafd90fa" type="text/css"/>
-    
-
-    <link rel="stylesheet" href="/custom/custom.css" type="text/css" />
-    <script src="/static/components/es6-promise/promise.min.js?v=f004a16cb856e0ff11781d01ec5ca8fe" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/components/requirejs/require.js?v=6da8be361b9ee26c5e721e76c6d4afce" type="text/javascript" charset="utf-8"></script>
-    <script>
-      require.config({
-          
-          baseUrl: '/static/',
-          paths: {
-            'auth/js/main': 'auth/js/main.min',
-            custom : '/custom',
-            nbextensions : '/nbextensions',
-            kernelspecs : '/kernelspecs',
-            underscore : 'components/underscore/underscore-min',
-            backbone : 'components/backbone/backbone-min',
-            jquery: 'components/jquery/jquery.min',
-            bootstrap: 'components/bootstrap/js/bootstrap.min',
-            bootstraptour: 'components/bootstrap-tour/build/js/bootstrap-tour.min',
-            'jquery-ui': 'components/jquery-ui/ui/minified/jquery-ui.min',
-            moment: 'components/moment/moment',
-            codemirror: 'components/codemirror',
-            termjs: 'components/xterm.js/dist/xterm',
-            typeahead: 'components/jquery-typeahead/dist/jquery.typeahead.min',
-          },
-	  map: { // for backward compatibility
-	    "*": {
-		"jqueryui": "jquery-ui",
-	    }
-	  },
-          shim: {
-            typeahead: {
-              deps: ["jquery"],
-              exports: "typeahead"
-            },
-            underscore: {
-              exports: '_'
-            },
-            backbone: {
-              deps: ["underscore", "jquery"],
-              exports: "Backbone"
-            },
-            bootstrap: {
-              deps: ["jquery"],
-              exports: "bootstrap"
-            },
-            bootstraptour: {
-              deps: ["bootstrap"],
-              exports: "Tour"
-            },
-            "jquery-ui": {
-              deps: ["jquery"],
-              exports: "$"
-            }
-          },
-          waitSeconds: 30,
-      });
-
-      require.config({
-          map: {
-              '*':{
-                'contents': 'services/contents',
-              }
-          }
-      });
-
-      define("bootstrap", function () {
-          return window.$;
-      });
-
-      define("jquery", function () {
-          return window.$;
-      });
-
-      define("jqueryui", function () {
-          return window.$;
-      });
-
-      define("jquery-ui", function () {
-          return window.$;
-      });
-      // error-catching custom.js shim.
-      define("custom", function (require, exports, module) {
-          try {
-              var custom = require('custom/custom');
-              console.debug('loaded custom.js');
-              return custom;
-          } catch (e) {
-              console.error("error loading custom.js", e);
-              return {};
-          }
-      })
-    </script>
-
-    
-    
-
-</head>
-
-<body class="edit_app "
- 
-data-base-url="/"
-data-file-path="HardCode_KocayList.py"
-
-  
- 
-
->
-
-<noscript>
-    <div id='noscript'>
-      Jupyter Notebook requires JavaScript.<br>
-      Please enable it to proceed.
-  </div>
-</noscript>
-
-<div id="header">
-  <div id="header-container" class="container">
-  <div id="ipython_notebook" class="nav navbar-brand pull-left"><a href="/tree" title='dashboard'><img src='/static/base/images/logo.png?v=641991992878ee24c6f3826e81054a0f' alt='Jupyter Notebook'/></a></div>
-
-  
-  
-  
-
-    <span id="login_widget">
-      
-    </span>
-
-  
-
-  
-
-  
-
-<span id="save_widget" class="pull-left save_widget">
-    <span class="filename"></span>
-    <span class="last_modified"></span>
-</span>
-
-
-  </div>
-  <div class="header-bar"></div>
-
-  
-
-<div id="menubar-container" class="container">
-  <div id="menubar">
-    <div id="menus" class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-          <p  class="navbar-text indicator_area">
-          <span id="current-mode" >current mode</span>
-          </p>
-        <button type="button" class="btn btn-default navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <i class="fa fa-bars"></i>
-          <span class="navbar-text">Menu</span>
-        </button>
-        <ul class="nav navbar-nav navbar-right">
-          <li id="notification_area"></li>
-        </ul>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">File</a>
-              <ul id="file-menu" class="dropdown-menu">
-                <li id="new-file"><a href="#">New</a></li>
-                <li id="save-file"><a href="#">Save</a></li>
-                <li id="rename-file"><a href="#">Rename</a></li>
-                <li id="download-file"><a href="#">Download</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit</a>
-              <ul id="edit-menu" class="dropdown-menu">
-                <li id="menu-find"><a href="#">Find</a></li>
-                <li id="menu-replace"><a href="#">Find &amp; Replace</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Key Map</li>
-                <li id="menu-keymap-default"><a href="#">Default<i class="fa"></i></a></li>
-                <li id="menu-keymap-sublime"><a href="#">Sublime Text<i class="fa"></i></a></li>
-                <li id="menu-keymap-vim"><a href="#">Vim<i class="fa"></i></a></li>
-                <li id="menu-keymap-emacs"><a href="#">emacs<i class="fa"></i></a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">View</a>
-              <ul id="view-menu" class="dropdown-menu">
-              <li id="toggle_header" title="Show/Hide the logo and notebook title (above menu bar)">
-              <a href="#">Toggle Header</a></li>
-              <li id="menu-line-numbers"><a href="#">Toggle Line Numbers</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Language</a>
-              <ul id="mode-menu" class="dropdown-menu">
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="lower-header-bar"></div>
-
-
-</div>
-
-<div id="site">
-
-
-<div id="texteditor-backdrop">
-<div id="texteditor-container" class="container"></div>
-</div>
-
-
-</div>
-
-
-
-
-
-
-    
-
-
-
-    <script src="/static/edit/js/main.min.js?v=3f26c490a03e64a774b6f266300dac6e" type="text/javascript" charset="utf-8"></script>
-
-
-
-</body>
-
-</html>
+KocayList = [['H1000e01', 'IHL[?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e06', 'IhLW?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e09', 'IhL[?CB?W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e12', 'I`L[?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e15', 'IhK[?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e23', 'IgL[?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e24', 'IhD[?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e34', 'IhH[?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e35', 'IhLK?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e45', 'IhLS?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e67', 'IhL[??B_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e68', 'IhL[?C@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e78', 'IhL[?CA_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e79', 'IhL[?CB_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1000e89', 'IhL[?CB_O', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e01', 'IJcgGCB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e04', 'IjCgGCB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e09', 'IjcgGCB?W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e12', 'IbcgGCB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e13', 'IhcgGCB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e23', 'IicgGCB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e25', 'IjcGGCB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e34', 'Ij_gGCB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e45', 'Ijc_GCB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e56', 'Ijcg?CB_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e67', 'IjcgG?B_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e68', 'IjcgGC@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e78', 'IjcgGCA_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e79', 'IjcgGCB_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1001e89', 'IjcgGCB_O', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e01', 'IXCWWD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e02', 'IhCWWD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e09', 'IxCWWD@?W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e12', 'IpCWWD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e18', 'IxCWWC@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e23', 'IwCWWD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e34', 'Ix?WWD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e35', 'IxCGWD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e45', 'IxCOWD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e46', 'IxCWGD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e56', 'IxCWOD@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e67', 'IxCWW@@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e78', 'IxCWWD?_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e79', 'IxCWWD@_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1002e89', 'IxCWWD@_O', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e01', 'IHCggU@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e08', 'IhCggS@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e09', 'IhCggU@OG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e12', 'I`CggU@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e19', 'IhCggU@_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e23', 'IgCggU@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e25', 'IhCGgU@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e34', 'Ih?ggU@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e36', 'IhCgGU@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e45', 'IhC_gU@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e47', 'IhCggE@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e56', 'IhCg_U@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e67', 'IhCggQ@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e78', 'IhCggU?oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1003e89', 'IhCggU@o?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e01', 'IZCGGKBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e02', 'IjCGGKBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e09', 'IzCGGKBAG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e12', 'IrCGGKBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e13', 'IxCGGKBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e23', 'IyCGGKBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e34', 'Iz?GGKBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e45', 'IzC?GKBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e49', 'IzCGGKB_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e56', 'IzCG?KBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e57', 'IzCGGCBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e67', 'IzCGGGBaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e68', 'IzCGGK@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e78', 'IzCGGKAaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1004e89', 'IzCGGKBa?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e01', 'IXSGGKP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e02', 'IhSGGKP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e09', 'IxSGGKP?g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e12', 'IpSGGKP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e14', 'IxCGGKP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e23', 'IwSGGKP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e34', 'IxOGGKP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e38', 'IxSGGK@_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e45', 'IxS?GKP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e56', 'IxSG?KP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e57', 'IxSGGCP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e67', 'IxSGGGP_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e69', 'IxSGGKP_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e78', 'IxSGGKO_g', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1005e89', 'IxSGGKP__', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e01', 'IXCGYCP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e02', 'IhCGYCP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e09', 'IxCGYCP@G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e12', 'IpCGYCP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e17', 'IxCGWCP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e23', 'IwCGYCP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e34', 'Ix?GYCP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e38', 'IxCGYC@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e45', 'IxC?YCP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e46', 'IxCGICP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e56', 'IxCGQCP`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e59', 'IxCGYCP_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e67', 'IxCGY?P`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e78', 'IxCGYCO`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1006e89', 'IxCGYCP`?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e01', 'IHUGHCBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e05', 'IhSGHCBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e09', 'IhUGHCBCG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e12', 'I`UGHCBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e14', 'IhEGHCBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e23', 'IgUGHCBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e27', 'IhUGGCBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e34', 'IhQGHCBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e39', 'IhUGHCB_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e45', 'IhU?HCBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e56', 'IhUG@CBcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e67', 'IhUGH?BcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e68', 'IhUGHC@cG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e78', 'IhUGHCAcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1007e89', 'IhUGHCBc?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e01', 'IHSkGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e06', 'IhSgGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e09', 'IhSkGCP?W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e12', 'I`SkGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e14', 'IhCkGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e23', 'IgSkGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e25', 'IhSKGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e34', 'IhOkGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e38', 'IhSkGC@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e45', 'IhScGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e56', 'IhSk?CP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e67', 'IhSkG?P_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e78', 'IhSkGCO_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e79', 'IhSkGCP_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1008e89', 'IhSkGCP_O', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e01', 'ILCGXD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e03', 'IhCGXD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e09', 'IlCGXD@@G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e12', 'IdCGXD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e18', 'IlCGXC@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e23', 'IkCGXD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e27', 'IlCGWD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e34', 'Il?GXD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e45', 'IlC?XD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e46', 'IlCGHD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e56', 'IlCGPD@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e59', 'IlCGXD@_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e67', 'IlCGX@@`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e78', 'IlCGXD?`G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1009e89', 'IlCGXD@`?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e01', 'IHLKGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e06', 'IhLGGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e09', 'IhLKGCP?W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e12', 'I`LKGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e15', 'IhKKGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e23', 'IgLKGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e24', 'IhDKGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e34', 'IhHKGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e38', 'IhLKGC@_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e45', 'IhLCGCP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e56', 'IhLK?CP_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e67', 'IhLKG?P_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e78', 'IhLKGCO_W', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e79', 'IhLKGCP_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1010e89', 'IhLKGCP_O', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e01', 'IHMGGcBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e05', 'IhKGGcBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e09', 'IhMGGcBOG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e12', 'I`MGGcBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e19', 'IhMGGcB_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e23', 'IgMGGcBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e24', 'IhEGGcBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e34', 'IhIGGcBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e37', 'IhMGGCBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e45', 'IhM?GcBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e56', 'IhMG?cBoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e67', 'IhMGG_BoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e68', 'IhMGGc@oG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e78', 'IhMGGcAoG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1011e89', 'IhMGGcBo?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e01', 'IXCIGKPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e02', 'IhCIGKPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e09', 'IxCIGKPAG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e12', 'IpCIGKPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e16', 'IxCGGKPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e23', 'IwCIGKPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e34', 'Ix?IGKPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e38', 'IxCIGK@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e45', 'IxCAGKPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e49', 'IxCIGKP_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e56', 'IxCI?KPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e57', 'IxCIGCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e67', 'IxCIGGPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e78', 'IxCIGKOaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1012e89', 'IxCIGKPa?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e01', 'IHEGgT@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e05', 'IhCGgT@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e09', 'IhEGgT@GG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e12', 'I`EGgT@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e18', 'IhEGgS@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e23', 'IgEGgT@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e29', 'IhEGgT@_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e34', 'IhAGgT@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e36', 'IhEGGT@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e45', 'IhE?gT@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e47', 'IhEGgD@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e56', 'IhEG_T@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e67', 'IhEGgP@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e78', 'IhEGgT?gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1013e89', 'IhEGgT@g?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e01', 'IHEHICHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e05', 'IhCHICHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e09', 'IhEHICHCG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e12', 'I`EHICHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e17', 'IhEHGCHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e23', 'IgEHICHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e26', 'IhEGICHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e34', 'IhAHICHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e39', 'IhEHICH_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e45', 'IhE@ICHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e48', 'IhEHIC@cG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e56', 'IhEHACHcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e67', 'IhEHI?HcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e78', 'IhEHICGcG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1014e89', 'IhEHICHc?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e01', 'IHEHICPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e05', 'IhCHICPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e09', 'IhEHICPAG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e12', 'I`EHICPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e17', 'IhEHGCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e23', 'IgEHICPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e26', 'IhEGICPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e34', 'IhAHICPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e38', 'IhEHIC@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e45', 'IhE@ICPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e49', 'IhEHICP_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e56', 'IhEHACPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e67', 'IhEHI?PaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e78', 'IhEHICOaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1015e89', 'IhEHICPa?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e01', 'IHEIHCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e05', 'IhCIHCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e09', 'IhEIHCPAG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e12', 'I`EIHCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e16', 'IhEGHCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e23', 'IgEIHCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e27', 'IhEIGCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e34', 'IhAIHCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e38', 'IhEIHC@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e45', 'IhEAHCPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e49', 'IhEIHCP_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e56', 'IhEI@CPaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e67', 'IhEIH?PaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e78', 'IhEIHCOaG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1016e89', 'IhEIHCPa?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e01', 'IHDKGSPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e06', 'IhDGGSPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e09', 'IhDKGSPGG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e12', 'I`DKGSPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e15', 'IhCKGSPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e23', 'IgDKGSPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e29', 'IhDKGSP_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e34', 'Ih@KGSPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e38', 'IhDKGS@gG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e45', 'IhDCGSPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e47', 'IhDKGCPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e56', 'IhDK?SPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e67', 'IhDKGOPgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e78', 'IhDKGSOgG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1017e89', 'IhDKGSPg?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e02', 'IHDKGd@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e06', 'IXDGGd@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e09', 'IXDKGd@AG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e12', 'IPDKGd@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e15', 'IXCKGd@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e18', 'IXDKGc@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e23', 'IWDKGd@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e34', 'IX@KGd@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e37', 'IXDKGD@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e45', 'IXDCGd@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e49', 'IXDKGd@_G', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e56', 'IXDK?d@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e67', 'IXDKG`@aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e78', 'IXDKGd?aG', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]],
+ ['H1018e89', 'IXDKGd@a?', [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]]]

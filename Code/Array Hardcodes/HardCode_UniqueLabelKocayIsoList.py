@@ -1,248 +1,209 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-    <meta charset="utf-8">
-
-    <title>HardCode_UniqueLabelKocayIsoList.py (editing)</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/static/base/images/favicon.ico?v=97c6417ed01bdc0ae3ef32ae4894fd03">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="/static/components/jquery-ui/themes/smoothness/jquery-ui.min.css?v=9b2c8d3489227115310662a343fce11c" type="text/css" />
-    <link rel="stylesheet" href="/static/components/jquery-typeahead/dist/jquery.typeahead.min.css?v=7afb461de36accb1aa133a1710f5bc56" type="text/css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
-<link rel="stylesheet" href="/static/components/codemirror/lib/codemirror.css?v=f25e9a9159e54b423b5a8dc4b1ab5c6e">
-<link rel="stylesheet" href="/static/components/codemirror/addon/dialog/dialog.css?v=c89dce10b44d2882a024e7befc2b63f5">
-
-    <link rel="stylesheet" href="/static/style/style.min.css?v=974839a888beb55bbba87883fafd90fa" type="text/css"/>
-    
-
-    <link rel="stylesheet" href="/custom/custom.css" type="text/css" />
-    <script src="/static/components/es6-promise/promise.min.js?v=f004a16cb856e0ff11781d01ec5ca8fe" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/components/requirejs/require.js?v=6da8be361b9ee26c5e721e76c6d4afce" type="text/javascript" charset="utf-8"></script>
-    <script>
-      require.config({
-          
-          baseUrl: '/static/',
-          paths: {
-            'auth/js/main': 'auth/js/main.min',
-            custom : '/custom',
-            nbextensions : '/nbextensions',
-            kernelspecs : '/kernelspecs',
-            underscore : 'components/underscore/underscore-min',
-            backbone : 'components/backbone/backbone-min',
-            jquery: 'components/jquery/jquery.min',
-            bootstrap: 'components/bootstrap/js/bootstrap.min',
-            bootstraptour: 'components/bootstrap-tour/build/js/bootstrap-tour.min',
-            'jquery-ui': 'components/jquery-ui/ui/minified/jquery-ui.min',
-            moment: 'components/moment/moment',
-            codemirror: 'components/codemirror',
-            termjs: 'components/xterm.js/dist/xterm',
-            typeahead: 'components/jquery-typeahead/dist/jquery.typeahead.min',
-          },
-	  map: { // for backward compatibility
-	    "*": {
-		"jqueryui": "jquery-ui",
-	    }
-	  },
-          shim: {
-            typeahead: {
-              deps: ["jquery"],
-              exports: "typeahead"
-            },
-            underscore: {
-              exports: '_'
-            },
-            backbone: {
-              deps: ["underscore", "jquery"],
-              exports: "Backbone"
-            },
-            bootstrap: {
-              deps: ["jquery"],
-              exports: "bootstrap"
-            },
-            bootstraptour: {
-              deps: ["bootstrap"],
-              exports: "Tour"
-            },
-            "jquery-ui": {
-              deps: ["jquery"],
-              exports: "$"
-            }
-          },
-          waitSeconds: 30,
-      });
-
-      require.config({
-          map: {
-              '*':{
-                'contents': 'services/contents',
-              }
-          }
-      });
-
-      define("bootstrap", function () {
-          return window.$;
-      });
-
-      define("jquery", function () {
-          return window.$;
-      });
-
-      define("jqueryui", function () {
-          return window.$;
-      });
-
-      define("jquery-ui", function () {
-          return window.$;
-      });
-      // error-catching custom.js shim.
-      define("custom", function (require, exports, module) {
-          try {
-              var custom = require('custom/custom');
-              console.debug('loaded custom.js');
-              return custom;
-          } catch (e) {
-              console.error("error loading custom.js", e);
-              return {};
-          }
-      })
-    </script>
-
-    
-    
-
-</head>
-
-<body class="edit_app "
- 
-data-base-url="/"
-data-file-path="HardCode_UniqueLabelKocayIsoList.py"
-
-  
- 
-
->
-
-<noscript>
-    <div id='noscript'>
-      Jupyter Notebook requires JavaScript.<br>
-      Please enable it to proceed.
-  </div>
-</noscript>
-
-<div id="header">
-  <div id="header-container" class="container">
-  <div id="ipython_notebook" class="nav navbar-brand pull-left"><a href="/tree" title='dashboard'><img src='/static/base/images/logo.png?v=641991992878ee24c6f3826e81054a0f' alt='Jupyter Notebook'/></a></div>
-
-  
-  
-  
-
-    <span id="login_widget">
-      
-    </span>
-
-  
-
-  
-
-  
-
-<span id="save_widget" class="pull-left save_widget">
-    <span class="filename"></span>
-    <span class="last_modified"></span>
-</span>
-
-
-  </div>
-  <div class="header-bar"></div>
-
-  
-
-<div id="menubar-container" class="container">
-  <div id="menubar">
-    <div id="menus" class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-          <p  class="navbar-text indicator_area">
-          <span id="current-mode" >current mode</span>
-          </p>
-        <button type="button" class="btn btn-default navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <i class="fa fa-bars"></i>
-          <span class="navbar-text">Menu</span>
-        </button>
-        <ul class="nav navbar-nav navbar-right">
-          <li id="notification_area"></li>
-        </ul>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">File</a>
-              <ul id="file-menu" class="dropdown-menu">
-                <li id="new-file"><a href="#">New</a></li>
-                <li id="save-file"><a href="#">Save</a></li>
-                <li id="rename-file"><a href="#">Rename</a></li>
-                <li id="download-file"><a href="#">Download</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit</a>
-              <ul id="edit-menu" class="dropdown-menu">
-                <li id="menu-find"><a href="#">Find</a></li>
-                <li id="menu-replace"><a href="#">Find &amp; Replace</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Key Map</li>
-                <li id="menu-keymap-default"><a href="#">Default<i class="fa"></i></a></li>
-                <li id="menu-keymap-sublime"><a href="#">Sublime Text<i class="fa"></i></a></li>
-                <li id="menu-keymap-vim"><a href="#">Vim<i class="fa"></i></a></li>
-                <li id="menu-keymap-emacs"><a href="#">emacs<i class="fa"></i></a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">View</a>
-              <ul id="view-menu" class="dropdown-menu">
-              <li id="toggle_header" title="Show/Hide the logo and notebook title (above menu bar)">
-              <a href="#">Toggle Header</a></li>
-              <li id="menu-line-numbers"><a href="#">Toggle Line Numbers</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Language</a>
-              <ul id="mode-menu" class="dropdown-menu">
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="lower-header-bar"></div>
-
-
-</div>
-
-<div id="site">
-
-
-<div id="texteditor-backdrop">
-<div id="texteditor-container" class="container"></div>
-</div>
-
-
-</div>
-
-
-
-
-
-
-    
-
-
-
-    <script src="/static/edit/js/main.min.js?v=3f26c490a03e64a774b6f266300dac6e" type="text/javascript" charset="utf-8"></script>
-
-
-
-</body>
-
-</html>
+UniqueLabelKocayIsoList = [['IHL[?CB_W', 'H1000e01', 'h0'],
+ ['IhLW?CB_W', 'H1000e06', 'H1000e09', 'H1000e12', 'H1000e15', 'h1'],
+ ['IgL[?CB_W',
+  'H1000e23',
+  'H1000e24',
+  'H1000e35',
+  'H1000e45',
+  'H1000e67',
+  'H1000e68',
+  'H1000e79',
+  'H1000e89',
+  'h2'],
+ ['IhH[?CB_W', 'H1000e34', 'H1000e78', 'h3'],
+ ['IJcgGCB_W', 'H1001e01', 'H1001e25', 'h4'],
+ ['IjCgGCB_W', 'H1001e04', 'H1001e45', 'h5'],
+ ['IjcgGCB?W', 'H1001e09', 'H1001e56', 'h6'],
+ ['IbcgGCB_W', 'H1001e12', 'h7'],
+ ['IhcgGCB_W', 'H1001e13', 'H1001e23', 'h8'],
+ ['Ij_gGCB_W', 'H1001e34', 'h9'],
+ ['IjcgG?B_W', 'H1001e67', 'H1001e68', 'H1001e79', 'H1001e89', 'h10'],
+ ['IjcgGCA_W', 'H1001e78', 'h11'],
+ ['IXCWWD@_W', 'H1002e01', 'H1002e89', 'h12'],
+ ['IhCWWD@_W', 'H1002e02', 'H1002e12', 'H1002e78', 'H1002e79', 'h13'],
+ ['IxCWWD@?W', 'H1002e09', 'H1002e18', 'h14'],
+ ['IwCWWD@_W', 'H1002e23', 'H1002e67', 'h15'],
+ ['Ix?WWD@_W', 'H1002e34', 'H1002e35', 'H1002e46', 'H1002e56', 'h16'],
+ ['IxCOWD@_W', 'H1002e45', 'h17'],
+ ['IHCggU@oG', 'H1003e01', 'H1003e08', 'H1003e19', 'H1003e89', 'h18'],
+ ['IhCggU@OG', 'H1003e09', 'h19'],
+ ['I`CggU@oG', 'H1003e12', 'H1003e78', 'h20'],
+ ['IgCggU@oG', 'H1003e23', 'H1003e25', 'H1003e47', 'H1003e67', 'h21'],
+ ['Ih?ggU@oG', 'H1003e34', 'H1003e36', 'H1003e45', 'H1003e56', 'h22'],
+ ['IZCGGKBaG',
+  'H1004e01',
+  'H1004e02',
+  'H1004e13',
+  'H1004e23',
+  'H1004e56',
+  'H1004e57',
+  'H1004e68',
+  'H1004e78',
+  'h23'],
+ ['IzCGGKBAG', 'H1004e09', 'H1004e34', 'H1004e45', 'H1004e89', 'h24'],
+ ['IrCGGKBaG', 'H1004e12', 'H1004e67', 'h25'],
+ ['IzCGGKB_G', 'H1004e49', 'h26'],
+ ['IXSGGKP_g', 'H1005e01', 'H1005e56', 'h27'],
+ ['IhSGGKP_g', 'H1005e02', 'H1005e57', 'h28'],
+ ['IxSGGKP?g', 'H1005e09', 'H1005e45', 'h29'],
+ ['IpSGGKP_g', 'H1005e12', 'H1005e67', 'h30'],
+ ['IxCGGKP_g', 'H1005e14', 'H1005e69', 'h31'],
+ ['IwSGGKP_g', 'H1005e23', 'H1005e78', 'h32'],
+ ['IxOGGKP_g', 'H1005e34', 'H1005e89', 'h33'],
+ ['IxSGGK@_g', 'H1005e38', 'h34'],
+ ['IXCGYCP`G',
+  'H1006e01',
+  'H1006e02',
+  'H1006e12',
+  'H1006e45',
+  'H1006e46',
+  'H1006e56',
+  'h35'],
+ ['IxCGYCP@G',
+  'H1006e09',
+  'H1006e17',
+  'H1006e23',
+  'H1006e34',
+  'H1006e59',
+  'H1006e67',
+  'h36'],
+ ['IxCGYC@`G', 'H1006e38', 'H1006e78', 'H1006e89', 'h37'],
+ ['IHUGHCBcG', 'H1007e01', 'H1007e34', 'h38'],
+ ['IhSGHCBcG', 'H1007e05', 'H1007e23', 'h39'],
+ ['IhUGHCBCG', 'H1007e09', 'H1007e39', 'h40'],
+ ['I`UGHCBcG', 'H1007e12', 'H1007e45', 'h41'],
+ ['IhEGHCBcG', 'H1007e14', 'h42'],
+ ['IhUGGCBcG', 'H1007e27', 'H1007e56', 'h43'],
+ ['IhUGH?BcG', 'H1007e67', 'h44'],
+ ['IhUGHC@cG', 'H1007e68', 'H1007e78', 'h45'],
+ ['IhUGHCBc?', 'H1007e89', 'h46'],
+ ['IHSkGCP_W', 'H1008e01', 'H1008e56', 'h47'],
+ ['IhSgGCP_W', 'H1008e06', 'h48'],
+ ['IhSkGCP?W', 'H1008e09', 'H1008e67', 'h49'],
+ ['I`SkGCP_W', 'H1008e12', 'H1008e14', 'H1008e25', 'H1008e45', 'h50'],
+ ['IgSkGCP_W', 'H1008e23', 'H1008e34', 'h51'],
+ ['IhSkGC@_W', 'H1008e38', 'h52'],
+ ['IhSkGCO_W', 'H1008e78', 'H1008e89', 'h53'],
+ ['IhSkGCP_G', 'H1008e79', 'h54'],
+ ['ILCGXD@`G', 'H1009e01', 'H1009e12', 'H1009e18', 'h55'],
+ ['IhCGXD@`G',
+  'H1009e03',
+  'H1009e09',
+  'H1009e23',
+  'H1009e27',
+  'H1009e78',
+  'H1009e89',
+  'h56'],
+ ['Il?GXD@`G', 'H1009e34', 'H1009e59', 'H1009e67', 'h57'],
+ ['IlC?XD@`G', 'H1009e45', 'H1009e46', 'H1009e56', 'h58'],
+ ['IHLKGCP_W', 'H1010e01', 'H1010e56', 'h59'],
+ ['IhLGGCP_W', 'H1010e06', 'H1010e15', 'h60'],
+ ['IhLKGCP?W', 'H1010e09', 'H1010e12', 'H1010e45', 'H1010e67', 'h61'],
+ ['IgLKGCP_W', 'H1010e23', 'H1010e34', 'H1010e78', 'H1010e89', 'h62'],
+ ['IhDKGCP_W', 'H1010e24', 'H1010e79', 'h63'],
+ ['IhLKGC@_W', 'H1010e38', 'h64'],
+ ['IHMGGcBoG',
+  'H1011e01',
+  'H1011e09',
+  'H1011e24',
+  'H1011e34',
+  'H1011e67',
+  'H1011e68',
+  'h65'],
+ ['IhKGGcBoG', 'H1011e05', 'H1011e45', 'H1011e56', 'h66'],
+ ['I`MGGcBoG', 'H1011e12', 'H1011e37', 'H1011e89', 'h67'],
+ ['IhMGGcB_G', 'H1011e19', 'H1011e23', 'H1011e78', 'h68'],
+ ['IXCIGKPaG', 'H1012e01', 'H1012e12', 'H1012e56', 'H1012e67', 'h69'],
+ ['IhCIGKPaG', 'H1012e02', 'H1012e57', 'h70'],
+ ['IxCIGKPAG', 'H1012e09', 'H1012e23', 'H1012e45', 'H1012e78', 'h71'],
+ ['IxCGGKPaG', 'H1012e16', 'h72'],
+ ['Ix?IGKPaG', 'H1012e34', 'H1012e38', 'H1012e49', 'H1012e89', 'h73'],
+ ['IHEGgT@gG',
+  'H1013e01',
+  'H1013e09',
+  'H1013e12',
+  'H1013e18',
+  'H1013e29',
+  'H1013e34',
+  'H1013e36',
+  'H1013e45',
+  'H1013e47',
+  'H1013e56',
+  'H1013e67',
+  'H1013e89',
+  'h74'],
+ ['IhCGgT@gG', 'H1013e05', 'H1013e23', 'H1013e78', 'h75'],
+ ['IHEHICHcG', 'H1014e01', 'H1014e09', 'H1014e45', 'H1014e56', 'h76'],
+ ['IhCHICHcG', 'H1014e05', 'h77'],
+ ['I`EHICHcG',
+  'H1014e12',
+  'H1014e17',
+  'H1014e26',
+  'H1014e34',
+  'H1014e39',
+  'H1014e48',
+  'H1014e67',
+  'H1014e89',
+  'h78'],
+ ['IgEHICHcG', 'H1014e23', 'H1014e78', 'h79'],
+ ['IHEHICPaG', 'H1015e01', 'H1015e23', 'H1015e56', 'H1015e78', 'h80'],
+ ['IhCHICPaG', 'H1015e05', 'H1015e38', 'h81'],
+ ['IhEHICPAG', 'H1015e09', 'H1015e34', 'H1015e45', 'H1015e89', 'h82'],
+ ['I`EHICPaG', 'H1015e12', 'H1015e67', 'h83'],
+ ['IhEHGCPaG', 'H1015e17', 'H1015e26', 'h84'],
+ ['IhEHICP_G', 'H1015e49', 'h85'],
+ ['IHEIHCPaG',
+  'H1016e01',
+  'H1016e09',
+  'H1016e12',
+  'H1016e23',
+  'H1016e34',
+  'H1016e45',
+  'H1016e56',
+  'H1016e67',
+  'H1016e78',
+  'H1016e89',
+  'h86'],
+ ['IhCIHCPaG',
+  'H1016e05',
+  'H1016e16',
+  'H1016e27',
+  'H1016e38',
+  'H1016e49',
+  'h87'],
+ ['IHDKGSPgG',
+  'H1017e01',
+  'H1017e29',
+  'H1017e38',
+  'H1017e47',
+  'H1017e56',
+  'h88'],
+ ['IhDGGSPgG',
+  'H1017e06',
+  'H1017e09',
+  'H1017e12',
+  'H1017e15',
+  'H1017e23',
+  'H1017e34',
+  'H1017e45',
+  'H1017e67',
+  'H1017e78',
+  'H1017e89',
+  'h89'],
+ ['IHDKGd@aG',
+  'H1018e02',
+  'H1018e06',
+  'H1018e09',
+  'H1018e12',
+  'H1018e15',
+  'H1018e18',
+  'H1018e23',
+  'H1018e34',
+  'H1018e37',
+  'H1018e45',
+  'H1018e49',
+  'H1018e56',
+  'H1018e67',
+  'H1018e78',
+  'H1018e89',
+  'h90']]

@@ -1,248 +1,240 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-    <meta charset="utf-8">
-
-    <title>HardCode_UniqueCardDegreesRaw.py (editing)</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/static/base/images/favicon.ico?v=97c6417ed01bdc0ae3ef32ae4894fd03">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="/static/components/jquery-ui/themes/smoothness/jquery-ui.min.css?v=9b2c8d3489227115310662a343fce11c" type="text/css" />
-    <link rel="stylesheet" href="/static/components/jquery-typeahead/dist/jquery.typeahead.min.css?v=7afb461de36accb1aa133a1710f5bc56" type="text/css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
-<link rel="stylesheet" href="/static/components/codemirror/lib/codemirror.css?v=f25e9a9159e54b423b5a8dc4b1ab5c6e">
-<link rel="stylesheet" href="/static/components/codemirror/addon/dialog/dialog.css?v=c89dce10b44d2882a024e7befc2b63f5">
-
-    <link rel="stylesheet" href="/static/style/style.min.css?v=974839a888beb55bbba87883fafd90fa" type="text/css"/>
-    
-
-    <link rel="stylesheet" href="/custom/custom.css" type="text/css" />
-    <script src="/static/components/es6-promise/promise.min.js?v=f004a16cb856e0ff11781d01ec5ca8fe" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/components/requirejs/require.js?v=6da8be361b9ee26c5e721e76c6d4afce" type="text/javascript" charset="utf-8"></script>
-    <script>
-      require.config({
-          
-          baseUrl: '/static/',
-          paths: {
-            'auth/js/main': 'auth/js/main.min',
-            custom : '/custom',
-            nbextensions : '/nbextensions',
-            kernelspecs : '/kernelspecs',
-            underscore : 'components/underscore/underscore-min',
-            backbone : 'components/backbone/backbone-min',
-            jquery: 'components/jquery/jquery.min',
-            bootstrap: 'components/bootstrap/js/bootstrap.min',
-            bootstraptour: 'components/bootstrap-tour/build/js/bootstrap-tour.min',
-            'jquery-ui': 'components/jquery-ui/ui/minified/jquery-ui.min',
-            moment: 'components/moment/moment',
-            codemirror: 'components/codemirror',
-            termjs: 'components/xterm.js/dist/xterm',
-            typeahead: 'components/jquery-typeahead/dist/jquery.typeahead.min',
-          },
-	  map: { // for backward compatibility
-	    "*": {
-		"jqueryui": "jquery-ui",
-	    }
-	  },
-          shim: {
-            typeahead: {
-              deps: ["jquery"],
-              exports: "typeahead"
-            },
-            underscore: {
-              exports: '_'
-            },
-            backbone: {
-              deps: ["underscore", "jquery"],
-              exports: "Backbone"
-            },
-            bootstrap: {
-              deps: ["jquery"],
-              exports: "bootstrap"
-            },
-            bootstraptour: {
-              deps: ["bootstrap"],
-              exports: "Tour"
-            },
-            "jquery-ui": {
-              deps: ["jquery"],
-              exports: "$"
-            }
-          },
-          waitSeconds: 30,
-      });
-
-      require.config({
-          map: {
-              '*':{
-                'contents': 'services/contents',
-              }
-          }
-      });
-
-      define("bootstrap", function () {
-          return window.$;
-      });
-
-      define("jquery", function () {
-          return window.$;
-      });
-
-      define("jqueryui", function () {
-          return window.$;
-      });
-
-      define("jquery-ui", function () {
-          return window.$;
-      });
-      // error-catching custom.js shim.
-      define("custom", function (require, exports, module) {
-          try {
-              var custom = require('custom/custom');
-              console.debug('loaded custom.js');
-              return custom;
-          } catch (e) {
-              console.error("error loading custom.js", e);
-              return {};
-          }
-      })
-    </script>
-
-    
-    
-
-</head>
-
-<body class="edit_app "
- 
-data-base-url="/"
-data-file-path="HardCode_UniqueCardDegreesRaw.py"
-
-  
- 
-
->
-
-<noscript>
-    <div id='noscript'>
-      Jupyter Notebook requires JavaScript.<br>
-      Please enable it to proceed.
-  </div>
-</noscript>
-
-<div id="header">
-  <div id="header-container" class="container">
-  <div id="ipython_notebook" class="nav navbar-brand pull-left"><a href="/tree" title='dashboard'><img src='/static/base/images/logo.png?v=641991992878ee24c6f3826e81054a0f' alt='Jupyter Notebook'/></a></div>
-
-  
-  
-  
-
-    <span id="login_widget">
-      
-    </span>
-
-  
-
-  
-
-  
-
-<span id="save_widget" class="pull-left save_widget">
-    <span class="filename"></span>
-    <span class="last_modified"></span>
-</span>
-
-
-  </div>
-  <div class="header-bar"></div>
-
-  
-
-<div id="menubar-container" class="container">
-  <div id="menubar">
-    <div id="menus" class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-          <p  class="navbar-text indicator_area">
-          <span id="current-mode" >current mode</span>
-          </p>
-        <button type="button" class="btn btn-default navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <i class="fa fa-bars"></i>
-          <span class="navbar-text">Menu</span>
-        </button>
-        <ul class="nav navbar-nav navbar-right">
-          <li id="notification_area"></li>
-        </ul>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">File</a>
-              <ul id="file-menu" class="dropdown-menu">
-                <li id="new-file"><a href="#">New</a></li>
-                <li id="save-file"><a href="#">Save</a></li>
-                <li id="rename-file"><a href="#">Rename</a></li>
-                <li id="download-file"><a href="#">Download</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit</a>
-              <ul id="edit-menu" class="dropdown-menu">
-                <li id="menu-find"><a href="#">Find</a></li>
-                <li id="menu-replace"><a href="#">Find &amp; Replace</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Key Map</li>
-                <li id="menu-keymap-default"><a href="#">Default<i class="fa"></i></a></li>
-                <li id="menu-keymap-sublime"><a href="#">Sublime Text<i class="fa"></i></a></li>
-                <li id="menu-keymap-vim"><a href="#">Vim<i class="fa"></i></a></li>
-                <li id="menu-keymap-emacs"><a href="#">emacs<i class="fa"></i></a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">View</a>
-              <ul id="view-menu" class="dropdown-menu">
-              <li id="toggle_header" title="Show/Hide the logo and notebook title (above menu bar)">
-              <a href="#">Toggle Header</a></li>
-              <li id="menu-line-numbers"><a href="#">Toggle Line Numbers</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Language</a>
-              <ul id="mode-menu" class="dropdown-menu">
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="lower-header-bar"></div>
-
-
-</div>
-
-<div id="site">
-
-
-<div id="texteditor-backdrop">
-<div id="texteditor-container" class="container"></div>
-</div>
-
-
-</div>
-
-
-
-
-
-
-    
-
-
-
-    <script src="/static/edit/js/main.min.js?v=3f26c490a03e64a774b6f266300dac6e" type="text/javascript" charset="utf-8"></script>
-
-
-
-</body>
-
-</html>
+UniqueCardDegreesRaw = ['c0',
+  'c6',
+  'c10',
+  'c18',
+  'c19',
+  'c28',
+  'c37',
+  'c43',
+  'c56',
+  'c62',
+  'c68',
+  'c74',
+  'c78',
+  'c83',
+  'c84',
+  'c90',
+  'c94',
+  'c96',
+  'c97',
+  'c102',
+  'c105',
+  'c106',
+  'c114',
+  'c122',
+  'c130',
+  'c139',
+  'c146',
+  'c148',
+  'c149',
+  'c150',
+  'c154',
+  'c162',
+  'c167',
+  'c174',
+  'c176',
+  'c177',
+  'c182',
+  'c183',
+  'c184',
+  'c186',
+  'c191',
+  'c192',
+  'c193',
+  'c195',
+  'c199',
+  'c204',
+  'c205',
+  'c209',
+  'c210',
+  'c213',
+  'c216',
+  'c217',
+  'c223',
+  'c224',
+  'c225',
+  'c227',
+  'c228',
+  'c232',
+  'c234',
+  'c235',
+  'c236',
+  'c237',
+  'c238',
+  'c239',
+ 'c1',
+  'c3',
+  'c7',
+  'c8',
+  'c20',
+  'c21',
+  'c22',
+  'c24',
+  'c25',
+  'c27',
+  'c29',
+  'c32',
+  'c33',
+  'c36',
+  'c38',
+  'c44',
+  'c48',
+  'c55',
+  'c69',
+  'c70',
+  'c71',
+  'c75',
+  'c77',
+  'c85',
+  'c86',
+  'c93',
+  'c99',
+  'c108',
+  'c112',
+  'c115',
+  'c118',
+  'c119',
+  'c120',
+  'c121',
+  'c124',
+  'c128',
+  'c129',
+  'c132',
+  'c133',
+  'c134',
+  'c135',
+  'c137',
+  'c138',
+  'c142',
+  'c144',
+  'c145',
+  'c147',
+  'c151',
+  'c152',
+  'c153',
+  'c155',
+  'c157',
+  'c158',
+  'c159',
+  'c161',
+  'c163',
+  'c164',
+  'c165',
+  'c166',
+  'c168',
+  'c169',
+  'c172',
+  'c175',
+  'c178',
+  'c179',
+  'c180',
+  'c181',
+  'c185',
+  'c187',
+  'c188',
+  'c194',
+  'c196',
+  'c197',
+  'c200',
+  'c201',
+  'c202',
+  'c203',
+  'c207',
+  'c212',
+  'c214',
+  'c219',
+  'c221',
+  'c222',
+  'c226',
+  'c229',
+  'c230',
+  'c231',
+  'c233',
+ 'c2',
+  'c4',
+  'c5',
+  'c9',
+  'c12',
+  'c13',
+  'c14',
+  'c16',
+  'c17',
+  'c23',
+  'c26',
+  'c30',
+  'c31',
+  'c34',
+  'c35',
+  'c40',
+  'c41',
+  'c45',
+  'c46',
+  'c47',
+  'c49',
+  'c50',
+  'c51',
+  'c52',
+  'c53',
+  'c54',
+  'c58',
+  'c59',
+  'c60',
+  'c64',
+  'c65',
+  'c66',
+  'c72',
+  'c73',
+  'c76',
+  'c80',
+  'c81',
+  'c89',
+  'c91',
+  'c92',
+  'c95',
+  'c100',
+  'c101',
+  'c104',
+  'c109',
+  'c110',
+  'c111',
+  'c116',
+  'c117',
+  'c125',
+  'c126',
+  'c127',
+  'c131',
+  'c136',
+  'c141',
+  'c143',
+  'c156',
+  'c160',
+  'c171',
+ 'c11',
+  'c15',
+  'c39',
+  'c42',
+  'c57',
+  'c61',
+  'c63',
+  'c67',
+  'c79',
+  'c82',
+  'c87',
+  'c88',
+  'c98',
+  'c103',
+  'c107',
+  'c113',
+  'c123',
+  'c140',
+  'c170',
+  'c173',
+  'c189',
+  'c190',
+  'c198',
+  'c206',
+  'c208',
+  'c211',
+  'c215',
+  'c218',
+  'c220']

@@ -1,248 +1,752 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-    <meta charset="utf-8">
-
-    <title>HardCode_KocayCardSharedList.py (editing)</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/static/base/images/favicon.ico?v=97c6417ed01bdc0ae3ef32ae4894fd03">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="/static/components/jquery-ui/themes/smoothness/jquery-ui.min.css?v=9b2c8d3489227115310662a343fce11c" type="text/css" />
-    <link rel="stylesheet" href="/static/components/jquery-typeahead/dist/jquery.typeahead.min.css?v=7afb461de36accb1aa133a1710f5bc56" type="text/css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
-<link rel="stylesheet" href="/static/components/codemirror/lib/codemirror.css?v=f25e9a9159e54b423b5a8dc4b1ab5c6e">
-<link rel="stylesheet" href="/static/components/codemirror/addon/dialog/dialog.css?v=c89dce10b44d2882a024e7befc2b63f5">
-
-    <link rel="stylesheet" href="/static/style/style.min.css?v=974839a888beb55bbba87883fafd90fa" type="text/css"/>
-    
-
-    <link rel="stylesheet" href="/custom/custom.css" type="text/css" />
-    <script src="/static/components/es6-promise/promise.min.js?v=f004a16cb856e0ff11781d01ec5ca8fe" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/components/requirejs/require.js?v=6da8be361b9ee26c5e721e76c6d4afce" type="text/javascript" charset="utf-8"></script>
-    <script>
-      require.config({
-          
-          baseUrl: '/static/',
-          paths: {
-            'auth/js/main': 'auth/js/main.min',
-            custom : '/custom',
-            nbextensions : '/nbextensions',
-            kernelspecs : '/kernelspecs',
-            underscore : 'components/underscore/underscore-min',
-            backbone : 'components/backbone/backbone-min',
-            jquery: 'components/jquery/jquery.min',
-            bootstrap: 'components/bootstrap/js/bootstrap.min',
-            bootstraptour: 'components/bootstrap-tour/build/js/bootstrap-tour.min',
-            'jquery-ui': 'components/jquery-ui/ui/minified/jquery-ui.min',
-            moment: 'components/moment/moment',
-            codemirror: 'components/codemirror',
-            termjs: 'components/xterm.js/dist/xterm',
-            typeahead: 'components/jquery-typeahead/dist/jquery.typeahead.min',
-          },
-	  map: { // for backward compatibility
-	    "*": {
-		"jqueryui": "jquery-ui",
-	    }
-	  },
-          shim: {
-            typeahead: {
-              deps: ["jquery"],
-              exports: "typeahead"
-            },
-            underscore: {
-              exports: '_'
-            },
-            backbone: {
-              deps: ["underscore", "jquery"],
-              exports: "Backbone"
-            },
-            bootstrap: {
-              deps: ["jquery"],
-              exports: "bootstrap"
-            },
-            bootstraptour: {
-              deps: ["bootstrap"],
-              exports: "Tour"
-            },
-            "jquery-ui": {
-              deps: ["jquery"],
-              exports: "$"
-            }
-          },
-          waitSeconds: 30,
-      });
-
-      require.config({
-          map: {
-              '*':{
-                'contents': 'services/contents',
-              }
-          }
-      });
-
-      define("bootstrap", function () {
-          return window.$;
-      });
-
-      define("jquery", function () {
-          return window.$;
-      });
-
-      define("jqueryui", function () {
-          return window.$;
-      });
-
-      define("jquery-ui", function () {
-          return window.$;
-      });
-      // error-catching custom.js shim.
-      define("custom", function (require, exports, module) {
-          try {
-              var custom = require('custom/custom');
-              console.debug('loaded custom.js');
-              return custom;
-          } catch (e) {
-              console.error("error loading custom.js", e);
-              return {};
-          }
-      })
-    </script>
-
-    
-    
-
-</head>
-
-<body class="edit_app "
- 
-data-base-url="/"
-data-file-path="HardCode_KocayCardSharedList.py"
-
-  
- 
-
->
-
-<noscript>
-    <div id='noscript'>
-      Jupyter Notebook requires JavaScript.<br>
-      Please enable it to proceed.
-  </div>
-</noscript>
-
-<div id="header">
-  <div id="header-container" class="container">
-  <div id="ipython_notebook" class="nav navbar-brand pull-left"><a href="/tree" title='dashboard'><img src='/static/base/images/logo.png?v=641991992878ee24c6f3826e81054a0f' alt='Jupyter Notebook'/></a></div>
-
-  
-  
-  
-
-    <span id="login_widget">
-      
-    </span>
-
-  
-
-  
-
-  
-
-<span id="save_widget" class="pull-left save_widget">
-    <span class="filename"></span>
-    <span class="last_modified"></span>
-</span>
-
-
-  </div>
-  <div class="header-bar"></div>
-
-  
-
-<div id="menubar-container" class="container">
-  <div id="menubar">
-    <div id="menus" class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-          <p  class="navbar-text indicator_area">
-          <span id="current-mode" >current mode</span>
-          </p>
-        <button type="button" class="btn btn-default navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <i class="fa fa-bars"></i>
-          <span class="navbar-text">Menu</span>
-        </button>
-        <ul class="nav navbar-nav navbar-right">
-          <li id="notification_area"></li>
-        </ul>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">File</a>
-              <ul id="file-menu" class="dropdown-menu">
-                <li id="new-file"><a href="#">New</a></li>
-                <li id="save-file"><a href="#">Save</a></li>
-                <li id="rename-file"><a href="#">Rename</a></li>
-                <li id="download-file"><a href="#">Download</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit</a>
-              <ul id="edit-menu" class="dropdown-menu">
-                <li id="menu-find"><a href="#">Find</a></li>
-                <li id="menu-replace"><a href="#">Find &amp; Replace</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Key Map</li>
-                <li id="menu-keymap-default"><a href="#">Default<i class="fa"></i></a></li>
-                <li id="menu-keymap-sublime"><a href="#">Sublime Text<i class="fa"></i></a></li>
-                <li id="menu-keymap-vim"><a href="#">Vim<i class="fa"></i></a></li>
-                <li id="menu-keymap-emacs"><a href="#">emacs<i class="fa"></i></a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">View</a>
-              <ul id="view-menu" class="dropdown-menu">
-              <li id="toggle_header" title="Show/Hide the logo and notebook title (above menu bar)">
-              <a href="#">Toggle Header</a></li>
-              <li id="menu-line-numbers"><a href="#">Toggle Line Numbers</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Language</a>
-              <ul id="mode-menu" class="dropdown-menu">
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="lower-header-bar"></div>
-
-
-</div>
-
-<div id="site">
-
-
-<div id="texteditor-backdrop">
-<div id="texteditor-container" class="container"></div>
-</div>
-
-
-</div>
-
-
-
-
-
-
-    
-
-
-
-    <script src="/static/edit/js/main.min.js?v=3f26c490a03e64a774b6f266300dac6e" type="text/javascript" charset="utf-8"></script>
-
-
-
-</body>
-
-</html>
+KocayCardSharedList = [['h1 h0', 'c0'],
+ ['h2 h0', 'c93'],
+ ['h2 h1', 'c1', 'c95'],
+ ['h3 h0', 'c181'],
+ ['h3 h2', 'c2'],
+ ['h4 h1', 'c182'],
+ ['h4 h2', 'c185'],
+ ['h5 h4', 'c3'],
+ ['h6 h1', 'c183'],
+ ['h6 h2', 'c184'],
+ ['h6 h4', 'c3'],
+ ['h6 h5', 'c3', 'c103'],
+ ['h7 h4', 'c4'],
+ ['h7 h5', 'c191'],
+ ['h8 h4', 'c4'],
+ ['h8 h6', 'c105', 'c194'],
+ ['h8 h7', 'c4'],
+ ['h9 h4', 'c98'],
+ ['h9 h5', 'c5'],
+ ['h9 h8', 'c7'],
+ ['h10 h2', 'c185'],
+ ['h10 h4', 'c185'],
+ ['h10 h6', 'c6', 'c106'],
+ ['h11 h2', 'c186'],
+ ['h11 h10', 'c8'],
+ ['h12 h5', 'c102'],
+ ['h12 h6', 'c194'],
+ ['h12 h8', 'c194'],
+ ['h13 h1', 'c183'],
+ ['h13 h2', 'c185'],
+ ['h13 h4', 'c185'],
+ ['h13 h5', 'c191', 'c193'],
+ ['h13 h6', 'c183'],
+ ['h13 h7', 'c191'],
+ ['h13 h8', 'c108'],
+ ['h13 h10', 'c185'],
+ ['h13 h12', 'c9'],
+ ['h14 h12', 'c9'],
+ ['h14 h13', 'c9'],
+ ['h15 h1', 'c182'],
+ ['h15 h2', 'c184'],
+ ['h15 h4', 'c182'],
+ ['h15 h6', 'c184'],
+ ['h15 h13', 'c10'],
+ ['h15 h14', 'c113'],
+ ['h16 h5', 'c192'],
+ ['h16 h10', 'c206'],
+ ['h16 h14', 'c214'],
+ ['h16 h15', 'c11', 'c114'],
+ ['h17 h16', 'c12'],
+ ['h18 h3', 'c188'],
+ ['h18 h11', 'c209'],
+ ['h18 h17', 'c216'],
+ ['h19 h3', 'c189'],
+ ['h19 h18', 'c13'],
+ ['h20 h1', 'c183'],
+ ['h20 h3', 'c187'],
+ ['h20 h6', 'c183'],
+ ['h20 h7', 'c107'],
+ ['h20 h13', 'c183'],
+ ['h20 h18', 'c14', 'c117'],
+ ['h21 h1', 'c183'],
+ ['h21 h3', 'c188'],
+ ['h21 h5', 'c101'],
+ ['h21 h6', 'c183'],
+ ['h21 h8', 'c108'],
+ ['h21 h13', 'c108', 'c183'],
+ ['h21 h18', 'c188'],
+ ['h21 h20', 'c15', 'c183'],
+ ['h22 h5', 'c102'],
+ ['h22 h6', 'c105'],
+ ['h22 h7', 'c196'],
+ ['h22 h8', 'c105'],
+ ['h22 h12', 'c102'],
+ ['h22 h21', 'c16'],
+ ['h23 h1', 'c182'],
+ ['h23 h4', 'c182'],
+ ['h23 h5', 'c103'],
+ ['h23 h6', 'c103'],
+ ['h23 h9', 'c201'],
+ ['h23 h12', 'c212'],
+ ['h23 h15', 'c182'],
+ ['h24 h1', 'c94', 'c182'],
+ ['h24 h4', 'c182'],
+ ['h24 h6', 'c194'],
+ ['h24 h8', 'c194'],
+ ['h24 h9', 'c109'],
+ ['h24 h12', 'c194'],
+ ['h24 h15', 'c182'],
+ ['h24 h23', 'c17', 'c119', 'c182'],
+ ['h25 h1', 'c183'],
+ ['h25 h6', 'c183'],
+ ['h25 h8', 'c198'],
+ ['h25 h13', 'c183'],
+ ['h25 h20', 'c183'],
+ ['h25 h21', 'c183'],
+ ['h25 h23', 'c18'],
+ ['h26 h4', 'c99'],
+ ['h26 h5', 'c191'],
+ ['h26 h7', 'c191'],
+ ['h26 h13', 'c191'],
+ ['h26 h24', 'c19'],
+ ['h27 h5', 'c193'],
+ ['h27 h13', 'c193'],
+ ['h27 h17', 'c216'],
+ ['h27 h18', 'c216'],
+ ['h28 h4', 'c190'],
+ ['h28 h10', 'c204'],
+ ['h28 h11', 'c207'],
+ ['h28 h27', 'c20'],
+ ['h29 h2', 'c185', 'c186'],
+ ['h29 h4', 'c185', 'c190'],
+ ['h29 h5', 'c192'],
+ ['h29 h10', 'c110', 'c185'],
+ ['h29 h11', 'c186'],
+ ['h29 h13', 'c185'],
+ ['h29 h16', 'c192'],
+ ['h29 h27', 'c20'],
+ ['h29 h28', 'c20', 'c190'],
+ ['h30 h10', 'c205'],
+ ['h30 h23', 'c222'],
+ ['h30 h27', 'c21'],
+ ['h30 h28', 'c22'],
+ ['h30 h29', 'c126'],
+ ['h31 h5', 'c104'],
+ ['h31 h9', 'c202'],
+ ['h31 h10', 'c206'],
+ ['h31 h12', 'c212'],
+ ['h31 h16', 'c206'],
+ ['h31 h23', 'c212', 'c222'],
+ ['h31 h27', 'c21'],
+ ['h31 h29', 'c23', 'c124'],
+ ['h31 h30', 'c21', 'c222'],
+ ['h32 h4', 'c100'],
+ ['h32 h9', 'c201'],
+ ['h32 h10', 'c204', 'c205'],
+ ['h32 h23', 'c201'],
+ ['h32 h28', 'c22', 'c204'],
+ ['h32 h29', 'c125'],
+ ['h32 h30', 'c22', 'c205'],
+ ['h32 h31', 'c128'],
+ ['h33 h5', 'c193'],
+ ['h33 h10', 'c206'],
+ ['h33 h12', 'c211'],
+ ['h33 h13', 'c193'],
+ ['h33 h16', 'c206'],
+ ['h33 h27', 'c193'],
+ ['h33 h29', 'c23'],
+ ['h33 h31', 'c23', 'c206'],
+ ['h33 h32', 'c24'],
+ ['h34 h5', 'c193'],
+ ['h34 h10', 'c110'],
+ ['h34 h13', 'c193'],
+ ['h34 h17', 'c217'],
+ ['h34 h27', 'c193'],
+ ['h34 h29', 'c110'],
+ ['h34 h32', 'c24'],
+ ['h34 h33', 'c24', 'c193'],
+ ['h35 h9', 'c202'],
+ ['h35 h30', 'c231'],
+ ['h35 h31', 'c202'],
+ ['h36 h9', 'c201'],
+ ['h36 h23', 'c201', 'c222'],
+ ['h36 h30', 'c222'],
+ ['h36 h31', 'c222'],
+ ['h36 h32', 'c201'],
+ ['h36 h33', 'c134'],
+ ['h36 h35', 'c25'],
+ ['h37 h32', 'c130'],
+ ['h37 h33', 'c234'],
+ ['h37 h36', 'c26'],
+ ['h38 h27', 'c226'],
+ ['h38 h28', 'c228'],
+ ['h38 h30', 'c230'],
+ ['h38 h31', 'c129'],
+ ['h38 h33', 'c234'],
+ ['h38 h35', 'c136'],
+ ['h38 h37', 'c234'],
+ ['h39 h8', 'c199'],
+ ['h39 h10', 'c205'],
+ ['h39 h30', 'c205'],
+ ['h39 h32', 'c205'],
+ ['h39 h35', 'c236'],
+ ['h39 h37', 'c139'],
+ ['h39 h38', 'c28'],
+ ['h40 h7', 'c197'],
+ ['h40 h10', 'c204'],
+ ['h40 h28', 'c123', 'c204'],
+ ['h40 h32', 'c204'],
+ ['h40 h33', 'c234'],
+ ['h40 h37', 'c234'],
+ ['h40 h38', 'c28', 'c234'],
+ ['h40 h39', 'c28'],
+ ['h41 h8', 'c199'],
+ ['h41 h10', 'c204'],
+ ['h41 h23', 'c222'],
+ ['h41 h25', 'c224'],
+ ['h41 h28', 'c204'],
+ ['h41 h30', 'c222'],
+ ['h41 h31', 'c222'],
+ ['h41 h32', 'c204'],
+ ['h41 h33', 'c133'],
+ ['h41 h36', 'c222'],
+ ['h41 h38', 'c29'],
+ ['h41 h39', 'c30', 'c199'],
+ ['h41 h40', 'c204'],
+ ['h42 h30', 'c232'],
+ ['h42 h32', 'c233'],
+ ['h42 h35', 'c235'],
+ ['h42 h36', 'c138'],
+ ['h42 h38', 'c29'],
+ ['h42 h39', 'c142'],
+ ['h42 h41', 'c29'],
+ ['h43 h7', 'c196'],
+ ['h43 h8', 'c198'],
+ ['h43 h10', 'c203'],
+ ['h43 h22', 'c196'],
+ ['h43 h23', 'c222'],
+ ['h43 h25', 'c198'],
+ ['h43 h27', 'c121'],
+ ['h43 h30', 'c222'],
+ ['h43 h31', 'c222'],
+ ['h43 h35', 'c136'],
+ ['h43 h36', 'c222'],
+ ['h43 h38', 'c136'],
+ ['h43 h39', 'c30'],
+ ['h43 h41', 'c30', 'c222'],
+ ['h44 h22', 'c221'],
+ ['h44 h27', 'c227'],
+ ['h44 h30', 'c231'],
+ ['h44 h35', 'c231'],
+ ['h44 h43', 'c32'],
+ ['h45 h8', 'c199'],
+ ['h45 h28', 'c228', 'c229'],
+ ['h45 h30', 'c232'],
+ ['h45 h38', 'c228'],
+ ['h45 h39', 'c199'],
+ ['h45 h41', 'c199'],
+ ['h45 h42', 'c232'],
+ ['h45 h43', 'c32'],
+ ['h45 h44', 'c32'],
+ ['h46 h8', 'c200'],
+ ['h46 h10', 'c205'],
+ ['h46 h30', 'c205'],
+ ['h46 h32', 'c205'],
+ ['h46 h39', 'c144', 'c205'],
+ ['h46 h40', 'c31'],
+ ['h46 h43', 'c152'],
+ ['h46 h45', 'c33'],
+ ['h47 h2', 'c186'],
+ ['h47 h3', 'c189'],
+ ['h47 h11', 'c186'],
+ ['h47 h17', 'c217'],
+ ['h47 h18', 'c116'],
+ ['h47 h19', 'c189'],
+ ['h47 h21', 'c220'],
+ ['h47 h28', 'c122'],
+ ['h47 h29', 'c186'],
+ ['h47 h34', 'c217'],
+ ['h48 h11', 'c209'],
+ ['h48 h18', 'c209'],
+ ['h48 h21', 'c220'],
+ ['h48 h35', 'c236'],
+ ['h48 h39', 'c236'],
+ ['h48 h40', 'c146'],
+ ['h48 h47', 'c34', 'c220'],
+ ['h49 h8', 'c198'],
+ ['h49 h10', 'c205'],
+ ['h49 h17', 'c216'],
+ ['h49 h18', 'c216'],
+ ['h49 h21', 'c118'],
+ ['h49 h25', 'c198'],
+ ['h49 h27', 'c216'],
+ ['h49 h30', 'c205'],
+ ['h49 h32', 'c205'],
+ ['h49 h38', 'c141'],
+ ['h49 h39', 'c205'],
+ ['h49 h43', 'c198'],
+ ['h49 h46', 'c205'],
+ ['h49 h47', 'c34'],
+ ['h49 h48', 'c34'],
+ ['h50 h10', 'c204'],
+ ['h50 h27', 'c225', 'c227'],
+ ['h50 h28', 'c204', 'c228'],
+ ['h50 h29', 'c126'],
+ ['h50 h30', 'c126'],
+ ['h50 h32', 'c204'],
+ ['h50 h33', 'c132'],
+ ['h50 h34', 'c135'],
+ ['h50 h38', 'c228'],
+ ['h50 h39', 'c144'],
+ ['h50 h40', 'c204'],
+ ['h50 h41', 'c204'],
+ ['h50 h44', 'c227'],
+ ['h50 h45', 'c228'],
+ ['h50 h46', 'c144'],
+ ['h50 h47', 'c35'],
+ ['h51 h8', 'c199'],
+ ['h51 h10', 'c203'],
+ ['h51 h30', 'c127'],
+ ['h51 h33', 'c131'],
+ ['h51 h39', 'c199'],
+ ['h51 h41', 'c199'],
+ ['h51 h43', 'c203'],
+ ['h51 h45', 'c199'],
+ ['h51 h50', 'c37'],
+ ['h52 h2', 'c186'],
+ ['h52 h3', 'c188'],
+ ['h52 h11', 'c186'],
+ ['h52 h18', 'c188'],
+ ['h52 h21', 'c188'],
+ ['h52 h27', 'c120'],
+ ['h52 h29', 'c186'],
+ ['h52 h47', 'c186'],
+ ['h52 h49', 'c159'],
+ ['h52 h51', 'c38'],
+ ['h53 h11', 'c207'],
+ ['h53 h19', 'c218'],
+ ['h53 h21', 'c220'],
+ ['h53 h27', 'c227'],
+ ['h53 h28', 'c207'],
+ ['h53 h44', 'c227'],
+ ['h53 h47', 'c220'],
+ ['h53 h48', 'c220'],
+ ['h53 h49', 'c36'],
+ ['h53 h50', 'c227'],
+ ['h53 h52', 'c39'],
+ ['h54 h11', 'c208'],
+ ['h54 h25', 'c224'],
+ ['h54 h41', 'c224'],
+ ['h54 h47', 'c156'],
+ ['h54 h49', 'c36'],
+ ['h54 h53', 'c36'],
+ ['h55 h9', 'c202'],
+ ['h55 h11', 'c208'],
+ ['h55 h28', 'c228'],
+ ['h55 h31', 'c129', 'c202'],
+ ['h55 h35', 'c202'],
+ ['h55 h38', 'c129', 'c228'],
+ ['h55 h41', 'c149'],
+ ['h55 h45', 'c228'],
+ ['h55 h50', 'c228'],
+ ['h55 h54', 'c208'],
+ ['h56 h12', 'c211'],
+ ['h56 h17', 'c216'],
+ ['h56 h18', 'c216'],
+ ['h56 h22', 'c221'],
+ ['h56 h27', 'c121', 'c216'],
+ ['h56 h33', 'c133', 'c211'],
+ ['h56 h38', 'c140'],
+ ['h56 h40', 'c238'],
+ ['h56 h41', 'c133'],
+ ['h56 h43', 'c121'],
+ ['h56 h44', 'c221'],
+ ['h56 h49', 'c216'],
+ ['h56 h55', 'c40'],
+ ['h57 h7', 'c196'],
+ ['h57 h9', 'c202'],
+ ['h57 h11', 'c209'],
+ ['h57 h18', 'c209'],
+ ['h57 h22', 'c196'],
+ ['h57 h28', 'c123'],
+ ['h57 h31', 'c202'],
+ ['h57 h35', 'c202'],
+ ['h57 h40', 'c123'],
+ ['h57 h43', 'c196'],
+ ['h57 h48', 'c209'],
+ ['h57 h55', 'c202'],
+ ['h57 h56', 'c42'],
+ ['h58 h7', 'c197'],
+ ['h58 h27', 'c226', 'c227'],
+ ['h58 h38', 'c226'],
+ ['h58 h40', 'c197'],
+ ['h58 h44', 'c227'],
+ ['h58 h50', 'c227'],
+ ['h58 h53', 'c227'],
+ ['h58 h57', 'c43'],
+ ['h59 h2', 'c186'],
+ ['h59 h5', 'c193'],
+ ['h59 h11', 'c186'],
+ ['h59 h13', 'c193'],
+ ['h59 h16', 'c115'],
+ ['h59 h27', 'c193'],
+ ['h59 h29', 'c186'],
+ ['h59 h30', 'c127'],
+ ['h59 h33', 'c193'],
+ ['h59 h34', 'c193'],
+ ['h59 h47', 'c186'],
+ ['h59 h51', 'c127'],
+ ['h59 h52', 'c186'],
+ ['h60 h4', 'c190'],
+ ['h60 h10', 'c203'],
+ ['h60 h28', 'c190'],
+ ['h60 h29', 'c190'],
+ ['h60 h33', 'c132'],
+ ['h60 h35', 'c236'],
+ ['h60 h39', 'c236'],
+ ['h60 h43', 'c203'],
+ ['h60 h48', 'c236'],
+ ['h60 h50', 'c132'],
+ ['h60 h51', 'c203'],
+ ['h60 h59', 'c44'],
+ ['h61 h7', 'c196'],
+ ['h61 h10', 'c204'],
+ ['h61 h13', 'c111'],
+ ['h61 h14', 'c214'],
+ ['h61 h16', 'c214'],
+ ['h61 h17', 'c216'],
+ ['h61 h18', 'c216'],
+ ['h61 h22', 'c196'],
+ ['h61 h27', 'c216'],
+ ['h61 h28', 'c204'],
+ ['h61 h32', 'c204'],
+ ['h61 h40', 'c204'],
+ ['h61 h41', 'c204'],
+ ['h61 h43', 'c196'],
+ ['h61 h49', 'c216'],
+ ['h61 h50', 'c204'],
+ ['h61 h56', 'c216'],
+ ['h61 h57', 'c196'],
+ ['h61 h59', 'c44'],
+ ['h61 h60', 'c44'],
+ ['h62 h5', 'c193'],
+ ['h62 h7', 'c197'],
+ ['h62 h10', 'c203'],
+ ['h62 h11', 'c209'],
+ ['h62 h13', 'c193'],
+ ['h62 h18', 'c209'],
+ ['h62 h22', 'c221'],
+ ['h62 h27', 'c193'],
+ ['h62 h28', 'c122'],
+ ['h62 h33', 'c193'],
+ ['h62 h34', 'c193'],
+ ['h62 h40', 'c197'],
+ ['h62 h43', 'c203'],
+ ['h62 h44', 'c221'],
+ ['h62 h47', 'c122'],
+ ['h62 h48', 'c209'],
+ ['h62 h51', 'c203'],
+ ['h62 h56', 'c221'],
+ ['h62 h57', 'c209'],
+ ['h62 h58', 'c197'],
+ ['h62 h59', 'c193'],
+ ['h62 h60', 'c203'],
+ ['h62 h61', 'c45'],
+ ['h63 h10', 'c205'],
+ ['h63 h27', 'c227'],
+ ['h63 h30', 'c205'],
+ ['h63 h32', 'c205'],
+ ['h63 h34', 'c135'],
+ ['h63 h39', 'c205'],
+ ['h63 h40', 'c238'],
+ ['h63 h44', 'c227'],
+ ['h63 h46', 'c205'],
+ ['h63 h49', 'c205'],
+ ['h63 h50', 'c135', 'c227'],
+ ['h63 h53', 'c227'],
+ ['h63 h56', 'c238'],
+ ['h63 h58', 'c227'],
+ ['h63 h61', 'c45'],
+ ['h63 h62', 'c45'],
+ ['h64 h2', 'c185'],
+ ['h64 h4', 'c185'],
+ ['h64 h10', 'c185'],
+ ['h64 h13', 'c185'],
+ ['h64 h29', 'c185'],
+ ['h64 h61', 'c169'],
+ ['h64 h62', 'c46'],
+ ['h65 h9', 'c202'],
+ ['h65 h10', 'c205'],
+ ['h65 h30', 'c205'],
+ ['h65 h31', 'c202'],
+ ['h65 h32', 'c205'],
+ ['h65 h33', 'c234'],
+ ['h65 h35', 'c202', 'c236'],
+ ['h65 h37', 'c234'],
+ ['h65 h38', 'c140', 'c234'],
+ ['h65 h39', 'c205', 'c236'],
+ ['h65 h40', 'c234'],
+ ['h65 h46', 'c205'],
+ ['h65 h48', 'c236'],
+ ['h65 h49', 'c205'],
+ ['h65 h55', 'c202'],
+ ['h65 h56', 'c140'],
+ ['h65 h57', 'c202'],
+ ['h65 h60', 'c236'],
+ ['h65 h61', 'c167'],
+ ['h65 h63', 'c205'],
+ ['h66 h12', 'c210'],
+ ['h66 h14', 'c214'],
+ ['h66 h16', 'c214'],
+ ['h66 h60', 'c166'],
+ ['h66 h61', 'c214'],
+ ['h66 h65', 'c47'],
+ ['h67 h9', 'c201'],
+ ['h67 h10', 'c206'],
+ ['h67 h14', 'c213'],
+ ['h67 h16', 'c206'],
+ ['h67 h23', 'c201'],
+ ['h67 h31', 'c206'],
+ ['h67 h32', 'c201'],
+ ['h67 h33', 'c206'],
+ ['h67 h36', 'c201'],
+ ['h67 h65', 'c48'],
+ ['h67 h66', 'c171'],
+ ['h68 h12', 'c211'],
+ ['h68 h14', 'c214'],
+ ['h68 h16', 'c214'],
+ ['h68 h23', 'c222'],
+ ['h68 h30', 'c222'],
+ ['h68 h31', 'c222'],
+ ['h68 h33', 'c211'],
+ ['h68 h36', 'c222'],
+ ['h68 h41', 'c149', 'c222'],
+ ['h68 h43', 'c222'],
+ ['h68 h55', 'c149'],
+ ['h68 h56', 'c211'],
+ ['h68 h61', 'c214'],
+ ['h68 h65', 'c48'],
+ ['h68 h66', 'c214'],
+ ['h68 h67', 'c48'],
+ ['h69 h8', 'c199'],
+ ['h69 h10', 'c205'],
+ ['h69 h12', 'c211'],
+ ['h69 h30', 'c205'],
+ ['h69 h32', 'c205'],
+ ['h69 h33', 'c211'],
+ ['h69 h39', 'c199', 'c205'],
+ ['h69 h41', 'c148', 'c199'],
+ ['h69 h45', 'c199'],
+ ['h69 h46', 'c205'],
+ ['h69 h49', 'c205'],
+ ['h69 h51', 'c199'],
+ ['h69 h56', 'c211'],
+ ['h69 h63', 'c205'],
+ ['h69 h65', 'c205'],
+ ['h69 h68', 'c211'],
+ ['h70 h28', 'c229'],
+ ['h70 h32', 'c233'],
+ ['h70 h39', 'c237'],
+ ['h70 h40', 'c145'],
+ ['h70 h42', 'c233'],
+ ['h70 h45', 'c229'],
+ ['h70 h69', 'c50'],
+ ['h71 h8', 'c200'],
+ ['h71 h10', 'c204'],
+ ['h71 h12', 'c210'],
+ ['h71 h28', 'c204'],
+ ['h71 h32', 'c204'],
+ ['h71 h40', 'c204'],
+ ['h71 h41', 'c204'],
+ ['h71 h46', 'c200'],
+ ['h71 h50', 'c204'],
+ ['h71 h61', 'c167', 'c204'],
+ ['h71 h65', 'c167'],
+ ['h71 h66', 'c210'],
+ ['h71 h69', 'c50'],
+ ['h71 h70', 'c50'],
+ ['h72 h12', 'c212'],
+ ['h72 h23', 'c212'],
+ ['h72 h31', 'c212'],
+ ['h72 h69', 'c51'],
+ ['h72 h71', 'c174'],
+ ['h73 h23', 'c222'],
+ ['h73 h30', 'c222'],
+ ['h73 h31', 'c222'],
+ ['h73 h33', 'c234'],
+ ['h73 h36', 'c222'],
+ ['h73 h37', 'c234'],
+ ['h73 h38', 'c234'],
+ ['h73 h39', 'c142'],
+ ['h73 h40', 'c234'],
+ ['h73 h41', 'c222'],
+ ['h73 h42', 'c142'],
+ ['h73 h43', 'c222'],
+ ['h73 h60', 'c166'],
+ ['h73 h65', 'c234'],
+ ['h73 h66', 'c166'],
+ ['h73 h68', 'c222'],
+ ['h73 h71', 'c52'],
+ ['h74 h11', 'c207'],
+ ['h74 h28', 'c207', 'c229'],
+ ['h74 h45', 'c229'],
+ ['h74 h47', 'c156'],
+ ['h74 h48', 'c157'],
+ ['h74 h53', 'c207'],
+ ['h74 h54', 'c156'],
+ ['h74 h70', 'c229'],
+ ['h75 h3', 'c189'],
+ ['h75 h19', 'c189'],
+ ['h75 h47', 'c189'],
+ ['h75 h53', 'c162'],
+ ['h75 h74', 'c53'],
+ ['h76 h28', 'c229'],
+ ['h76 h30', 'c230'],
+ ['h76 h38', 'c230'],
+ ['h76 h39', 'c237'],
+ ['h76 h45', 'c154', 'c229'],
+ ['h76 h70', 'c229', 'c237'],
+ ['h76 h74', 'c176', 'c229'],
+ ['h77 h27', 'c226'],
+ ['h77 h38', 'c226'],
+ ['h77 h58', 'c226'],
+ ['h77 h76', 'c55'],
+ ['h78 h28', 'c228'],
+ ['h78 h30', 'c231', 'c232'],
+ ['h78 h35', 'c231', 'c235'],
+ ['h78 h38', 'c228'],
+ ['h78 h39', 'c143'],
+ ['h78 h41', 'c150'],
+ ['h78 h42', 'c232', 'c235'],
+ ['h78 h44', 'c231'],
+ ['h78 h45', 'c228', 'c232'],
+ ['h78 h50', 'c228'],
+ ['h78 h55', 'c228'],
+ ['h78 h76', 'c56'],
+ ['h79 h25', 'c224'],
+ ['h79 h27', 'c225'],
+ ['h79 h41', 'c224'],
+ ['h79 h44', 'c153'],
+ ['h79 h50', 'c225'],
+ ['h79 h54', 'c224'],
+ ['h79 h78', 'c57'],
+ ['h80 h8', 'c199'],
+ ['h80 h11', 'c207'],
+ ['h80 h27', 'c225'],
+ ['h80 h28', 'c207'],
+ ['h80 h39', 'c199'],
+ ['h80 h40', 'c238'],
+ ['h80 h41', 'c199'],
+ ['h80 h45', 'c154', 'c155', 'c199'],
+ ['h80 h50', 'c225'],
+ ['h80 h51', 'c199'],
+ ['h80 h53', 'c161', 'c207'],
+ ['h80 h56', 'c238'],
+ ['h80 h58', 'c165'],
+ ['h80 h63', 'c238'],
+ ['h80 h69', 'c199'],
+ ['h80 h74', 'c207'],
+ ['h80 h76', 'c154'],
+ ['h80 h79', 'c225'],
+ ['h81 h27', 'c227'],
+ ['h81 h28', 'c228'],
+ ['h81 h38', 'c228'],
+ ['h81 h39', 'c143'],
+ ['h81 h44', 'c227'],
+ ['h81 h45', 'c228'],
+ ['h81 h50', 'c227', 'c228'],
+ ['h81 h53', 'c227'],
+ ['h81 h55', 'c228'],
+ ['h81 h58', 'c227'],
+ ['h81 h63', 'c227'],
+ ['h81 h77', 'c178'],
+ ['h81 h78', 'c143', 'c228'],
+ ['h81 h80', 'c58'],
+ ['h82 h8', 'c199'],
+ ['h82 h11', 'c208'],
+ ['h82 h27', 'c227'],
+ ['h82 h30', 'c230'],
+ ['h82 h38', 'c230'],
+ ['h82 h39', 'c199'],
+ ['h82 h41', 'c199'],
+ ['h82 h44', 'c153', 'c227'],
+ ['h82 h45', 'c199'],
+ ['h82 h50', 'c227'],
+ ['h82 h51', 'c160', 'c199'],
+ ['h82 h53', 'c227'],
+ ['h82 h54', 'c208'],
+ ['h82 h55', 'c208'],
+ ['h82 h58', 'c227'],
+ ['h82 h63', 'c227'],
+ ['h82 h69', 'c173', 'c199'],
+ ['h82 h76', 'c230'],
+ ['h82 h78', 'c179'],
+ ['h82 h79', 'c153'],
+ ['h82 h80', 'c58', 'c199'],
+ ['h82 h81', 'c58', 'c227'],
+ ['h83 h27', 'c226'],
+ ['h83 h30', 'c231'],
+ ['h83 h35', 'c231'],
+ ['h83 h38', 'c226'],
+ ['h83 h44', 'c231'],
+ ['h83 h56', 'c163'],
+ ['h83 h58', 'c226'],
+ ['h83 h77', 'c226'],
+ ['h83 h78', 'c179', 'c231'],
+ ['h83 h80', 'c59'],
+ ['h83 h82', 'c179'],
+ ['h84 h28', 'c228'],
+ ['h84 h35', 'c235'],
+ ['h84 h38', 'c228'],
+ ['h84 h40', 'c147'],
+ ['h84 h42', 'c235'],
+ ['h84 h45', 'c228'],
+ ['h84 h50', 'c228'],
+ ['h84 h55', 'c228'],
+ ['h84 h76', 'c177'],
+ ['h84 h78', 'c228', 'c235'],
+ ['h84 h80', 'c59'],
+ ['h84 h81', 'c228'],
+ ['h84 h83', 'c59'],
+ ['h85 h30', 'c232'],
+ ['h85 h41', 'c150'],
+ ['h85 h42', 'c232'],
+ ['h85 h45', 'c232'],
+ ['h85 h78', 'c150', 'c232'],
+ ['h85 h82', 'c60'],
+ ['h86 h7', 'c197'],
+ ['h86 h11', 'c207'],
+ ['h86 h28', 'c207'],
+ ['h86 h40', 'c197'],
+ ['h86 h45', 'c155'],
+ ['h86 h53', 'c207'],
+ ['h86 h58', 'c197'],
+ ['h86 h62', 'c170', 'c197'],
+ ['h86 h74', 'c207'],
+ ['h86 h80', 'c155', 'c207'],
+ ['h87 h28', 'c229'],
+ ['h87 h40', 'c147'],
+ ['h87 h45', 'c229'],
+ ['h87 h70', 'c229'],
+ ['h87 h74', 'c229'],
+ ['h87 h76', 'c229'],
+ ['h87 h84', 'c147'],
+ ['h87 h86', 'c61'],
+ ['h88 h27', 'c227'],
+ ['h88 h44', 'c227'],
+ ['h88 h50', 'c227'],
+ ['h88 h53', 'c227'],
+ ['h88 h56', 'c163'],
+ ['h88 h58', 'c227'],
+ ['h88 h63', 'c227'],
+ ['h88 h81', 'c227'],
+ ['h88 h82', 'c227'],
+ ['h88 h83', 'c163'],
+ ['h89 h19', 'c218'],
+ ['h89 h22', 'c221'],
+ ['h89 h27', 'c225'],
+ ['h89 h44', 'c221'],
+ ['h89 h50', 'c225'],
+ ['h89 h53', 'c218'],
+ ['h89 h56', 'c221'],
+ ['h89 h58', 'c165'],
+ ['h89 h62', 'c170', 'c221'],
+ ['h89 h79', 'c225'],
+ ['h89 h80', 'c165', 'c225'],
+ ['h89 h86', 'c170'],
+ ['h89 h88', 'c62'],
+ ['h90 h35', 'c235'],
+ ['h90 h42', 'c235'],
+ ['h90 h78', 'c180', 'c235'],
+ ['h90 h84', 'c235']]
