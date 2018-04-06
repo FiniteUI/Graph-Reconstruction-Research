@@ -5,6 +5,8 @@ This project was supervised by Dr. Ken W. Smith. Roughly 20 students participate
 
 Each small group was assigned a couple of cubic graphs to manually generate the Kocay graphs and decks from. Not wanting to do that, I wrote a program to do it for me. I used that program to go ahead and generate all of the cards. After that, Dr. Smith would ask me for specific data sets, which I would write programs for and get to him. All of the data generated was checked against the manual data that the other students generated.
 
+This is not a complete report of the entire projects findings, just a report of my own work on it.
+
 All code was written in SageMath, which is essentially a math extension and environment of Python 2. My code would be stored in files, and to run it I would open a new workbook, use the command load() to load that file into the current workbook, and then use the desired functions.
 
 Final Report.pdf is a complete walkthrough of all of my group's work over the semester, and includes brief explanations of the subject matter.
