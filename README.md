@@ -1,6 +1,8 @@
 # Graph-Reconstruction-Research, Fall 2017
 This is part of my Fall 2017 Undergraduate Research project, attempting to progress towards proving or disproving the Graph Reconstruction Conjecture.
 
+This was my first experience programming for a specific purpose, not for an assignment, and my first experience coding to generate data for others to use.
+
 This project was supervised by Dr. Ken W. Smith. Roughly 20 students participated in this research, working as a full group once a week and working more closely in smaller groups of 3-5 meeting once a week. However, most of the students were Mathematics students, and I was the most experienced Computer Science student and programmer.
 
 Each small group was assigned a couple of cubic graphs to manually generate the Kocay graphs and decks from. Not wanting to do that, I wrote a program to do it for me. I used that program to go ahead and generate all of the cards. After that, Dr. Smith would ask me for specific data sets, which I would write programs for and get to him. All of the data generated was checked against the manual data that the other students generated.
