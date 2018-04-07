@@ -1,0 +1,2 @@
+## D8 Stuff:
+D8 stuff is a folder containing basically the same things as the folders Data and Code except for graphs on 8 vertices instead of 10. The code in that folder is the same as the other code only modified slightly so that it would work for graphs on 8 vertices. The code in that folder was actually modified so that it would work for graphs of any size, so theoretically it could replace the original code, but this hasn't been tested so I kept them seperate anyway.
