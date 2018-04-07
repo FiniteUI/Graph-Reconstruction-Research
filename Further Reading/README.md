@@ -1,0 +1,1 @@
+For those interested in the subject matter, the folder Further Reading contains Kocay's original paper on the subject, which sets the grounds for all of our work, an explanation of Partial Automorphisms by Dr. Smith, and an explanation of the method we used to generate interesting graphs towards the end of the project.
