@@ -9,7 +9,7 @@ Each small group was assigned a couple of cubic graphs to manually generate the 
 
 This is not a complete report of the entire projects findings, just a report of my own work on it.
 
-All code was written in SageMath, which is essentially a math extension and environment of Python 2. My code would be stored in files, and to run it I would open a new workbook, use the command load() to load that file into the current workbook, and then use the desired functions.
+All code was written in SageMath, which is essentially a math extension and environment of Python 2. My code would be stored in files, and to run it I would open a new workbook, use the command load() to load that file into the current workbook, and then use the desired functions. The University had a SageMath server, however I did all my work on a virtual machine on my home computer.
 
 Final Report.pdf is a complete walkthrough of all of my group's work over the semester, and includes brief explanations of the subject matter.
 
