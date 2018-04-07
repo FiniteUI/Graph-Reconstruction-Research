@@ -89,7 +89,7 @@ KocaySharing.py is code for generating the Kocay card sharing chart and lists of
 The biggest operation in this code was checking for isomorphisms in the cards. Worst case, you had to compare 2850 cards against 2850 cards which is 8,122,500 comparisons. However, it is unneccessary to compare a card to itself, saving you 2850 comparisons. It is also unneccesary to compare cards both directions. Basically, if you compare y to x, you don't need to later compare x to y, so that saves you a great deal of comparisons. You also don't need to compare cards with cards that you know are isomorphic with cards you've already compared them to, saving many comparisons. I don't know exactly how many comparisons it took, I should record that number sometime.
 
 ## D8 Stuff:
-D8 stuff is a folder containing basically the same things listed above except for graphs on 8 vertices instead of 10. The code in that folder is the same as the other code only modified slightly so that it would work for graphs on 8 vertices. The code in that folder was actually modified so that it would work for graphs of any size, so theoretically it could replace the original code, but this hasn't been tested and I kept them seperate anyway.
+D8 stuff is a folder containing basically the same things listed above except for graphs on 8 vertices instead of 10. The code in that folder is the same as the other code only modified slightly so that it would work for graphs on 8 vertices. The code in that folder was actually modified so that it would work for graphs of any size, so theoretically it could replace the original code, but this hasn't been tested so I kept them seperate anyway.
 
 
 
